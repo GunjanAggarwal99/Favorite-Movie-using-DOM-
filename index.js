@@ -19,6 +19,10 @@ const updateUi = () => {
     emptyScreen.style.display = 'none';
   }
 };
+const cancelMovieDeletion = () => {
+  backdropToggle();
+  deleteMovieModal.classList.remove('visible');
+};
 const deleteMovie = (movieId) => {
   let movieIndex = 0;
   for (const movie of movies) {
@@ -31,10 +35,6 @@ const deleteMovie = (movieId) => {
   newList.children[movieIndex].remove();
   cancelMovieDeletion();
   updateUi();
-};
-const cancelMovieDeletion = () => {
-  backdropToggle();
-  deleteMovieModal.classList.remove('visible');
 };
 const deleteMovieHandler = (movieId) => {
   deleteMovieModal.classList.add('visible');
@@ -61,7 +61,7 @@ const renderMovieToScreen = (id, title, imageUrl, rating) => {
   </div>
   `;
   newMovieElement.addEventListener('click', deleteMovieHandler.bind(null, id));
-  newList.appendChild(newMovieElement);
+  newList.append(newMovieElement);
 };
 const backdropToggle = () => {
   backdrop.classList.toggle('visible');
@@ -88,16 +88,17 @@ const addBtnHandler = () => {
   const imageUrlValue = userInput[1].value;
   const ratingValue = userInput[2].value;
   if (
-    titleValue.trim() == '' ||
-    imageUrlValue.trim() == '' ||
-    ratingValue.trim() == '' ||
+    titleValue.trim() === '' ||
+    imageUrlValue.trim() === '' ||
+    ratingValue.trim() === '' ||
     +ratingValue < 1 ||
     +ratingValue > 5
   ) {
     alert('Please Enetr valid input');
+    return;
   }
   const newMovie = {
-    id: Math.random.toString(),
+    id: Math.random().toString(),
     title: titleValue,
     image: imageUrlValue,
     rating: ratingValue,
